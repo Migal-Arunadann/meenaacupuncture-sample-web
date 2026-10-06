@@ -1,13 +1,13 @@
 /**
  * Meena Acupuncture Clinic · Vanilla JavaScript
- * Purpose: Accessible navigation, quiet testimonial transitions, WhatsApp enquiry formatting.
- * Zero external libraries. Minimal footprint.
+ * High-End Japanese/Nordic Editorial Spa Experience
+ * Accessible navigation, condition tab switcher, quiet review carousel.
  */
 
 document.addEventListener('DOMContentLoaded', () => {
   initMobileNav();
   initTestimonials();
-  initEnquiryForm();
+  initConditionTabs();
 });
 
 /* --------------------------------------------------------------------------
@@ -27,7 +27,6 @@ function initMobileNav() {
       mobileNav.classList.add('is-open');
       menuToggle.setAttribute('aria-expanded', 'true');
       menuToggle.setAttribute('aria-label', 'Close menu');
-      // Update toggle icon to close (X)
       menuToggle.innerHTML = `
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
           <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -38,7 +37,6 @@ function initMobileNav() {
       mobileNav.classList.remove('is-open');
       menuToggle.setAttribute('aria-expanded', 'false');
       menuToggle.setAttribute('aria-label', 'Open navigation menu');
-      // Update toggle icon to hamburger
       menuToggle.innerHTML = `
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
           <line x1="4" y1="7" x2="20" y2="7"></line>
@@ -51,7 +49,6 @@ function initMobileNav() {
 
   menuToggle.addEventListener('click', () => toggleMenu());
 
-  // Close on Escape key
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && mobileNav.classList.contains('is-open')) {
       toggleMenu(false);
@@ -59,7 +56,6 @@ function initMobileNav() {
     }
   });
 
-  // Close when clicking outside header & nav
   document.addEventListener('click', (e) => {
     if (mobileNav.classList.contains('is-open')) {
       const isInside = mobileNav.contains(e.target) || menuToggle.contains(e.target);
@@ -71,7 +67,40 @@ function initMobileNav() {
 }
 
 /* --------------------------------------------------------------------------
-   02. PATIENT TESTIMONIALS CAROUSEL (Quiet, one at a time)
+   02. CONDITIONS WE ADDRESS (Interactive Tab Switcher)
+   -------------------------------------------------------------------------- */
+function initConditionTabs() {
+  const tabButtons = document.querySelectorAll('.condition-tab-btn');
+  const panels = document.querySelectorAll('.conditions-panel');
+
+  if (!tabButtons.length || !panels.length) return;
+
+  tabButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      const targetId = button.getAttribute('data-tab');
+
+      // Update active tab buttons
+      tabButtons.forEach(btn => {
+        btn.classList.remove('is-active');
+        btn.setAttribute('aria-selected', 'false');
+      });
+      button.classList.add('is-active');
+      button.setAttribute('aria-selected', 'true');
+
+      // Update panels
+      panels.forEach(panel => {
+        if (panel.id === targetId) {
+          panel.classList.add('is-active');
+        } else {
+          panel.classList.remove('is-active');
+        }
+      });
+    });
+  });
+}
+
+/* --------------------------------------------------------------------------
+   03. PATIENT TESTIMONIALS CAROUSEL
    -------------------------------------------------------------------------- */
 function initTestimonials() {
   const quoteEl = document.getElementById('testimonialQuote');
@@ -88,7 +117,7 @@ function initTestimonials() {
     {
       quote: "We are attending Dr. Sakthivel sir's acu treatment since 2021. He is our family doctor now. Thank you sir and whole team.",
       author: "Arumugam S",
-      source: "Google Review"
+      source: "Google Review · Kolathur"
     },
     {
       quote: "By the grace of God, I have undergone a healthy transformation through you.",
@@ -114,7 +143,6 @@ function initTestimonials() {
 
   let currentIndex = 0;
 
-  // Build dots
   dotsContainer.innerHTML = '';
   reviews.forEach((_, idx) => {
     const dot = document.createElement('button');
@@ -130,7 +158,6 @@ function initTestimonials() {
   function updateDisplay() {
     const item = reviews[currentIndex];
     
-    // Gentle fade transition
     quoteEl.style.opacity = '0';
     quoteEl.style.transform = 'translateY(6px)';
     
@@ -144,7 +171,6 @@ function initTestimonials() {
       quoteEl.style.transform = 'translateY(0)';
     }, 150);
 
-    // Update dots
     const dots = dotsContainer.querySelectorAll('.testimonial-dot');
     dots.forEach((dot, idx) => {
       if (idx === currentIndex) {
@@ -163,53 +189,5 @@ function initTestimonials() {
   nextBtn.addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % reviews.length;
     updateDisplay();
-  });
-}
-
-/* --------------------------------------------------------------------------
-   03. WHATSAPP ENQUIRY FORM HANDLER
-   -------------------------------------------------------------------------- */
-function initEnquiryForm() {
-  const form = document.getElementById('whatsappEnquiryForm');
-  if (!form) return;
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const nameInput = document.getElementById('enquiryName');
-    const phoneInput = document.getElementById('enquiryPhone');
-    const messageInput = document.getElementById('enquiryMessage');
-
-    const name = nameInput ? nameInput.value.trim() : '';
-    const phone = phoneInput ? phoneInput.value.trim() : '';
-    const message = messageInput ? messageInput.value.trim() : '';
-
-    if (!name) {
-      alert('Please share your name so we can address you properly.');
-      nameInput && nameInput.focus();
-      return;
-    }
-
-    if (!phone) {
-      alert('Please provide your phone number.');
-      phoneInput && phoneInput.focus();
-      return;
-    }
-
-    // Construct precise WhatsApp message structure as specified
-    const waText = 
-`Hello Meena Acupuncture Clinic,
-
-I would like to enquire about a visit.
-
-Name: ${name}
-Phone: ${phone}
-Message: ${message || 'I would like to know more about scheduling an appointment.'}`;
-
-    const clinicWhatsAppNumber = '918754418502';
-    const waUrl = `https://wa.me/${clinicWhatsAppNumber}?text=${encodeURIComponent(waText)}`;
-
-    // Open WhatsApp
-    window.open(waUrl, '_blank', 'noopener,noreferrer');
   });
 }
