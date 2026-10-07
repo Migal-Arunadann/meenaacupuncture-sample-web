@@ -571,36 +571,39 @@ p {
 }
 
 /* --------------------------------------------------------------------------
-   07. HERO SECTION (Above-the-fold visual impact on mobile)
+   07. HERO SECTION (Desktop Balanced & Above-the-fold Visual Impact)
    -------------------------------------------------------------------------- */
 .hero-home {
-  padding-top: clamp(2.5rem, 5vw, 5.5rem);
-  padding-bottom: clamp(3rem, 6vw, 6rem);
+  padding-top: clamp(2rem, 4vh, 3.5rem);
+  padding-bottom: clamp(2rem, 4vh, 3.5rem);
   position: relative;
 }
 
 .hero-content {
-  max-width: 600px;
+  max-width: 580px;
 }
 
 .hero-headline {
-  margin-bottom: 1.5rem;
+  font-size: clamp(2.35rem, 4vw, 3.5rem);
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+  letter-spacing: -0.02em;
 }
 
 .hero-subtext {
-  font-size: 1.15rem;
-  line-height: 1.75;
+  font-size: 1.08rem;
+  line-height: 1.7;
   color: var(--color-ink-muted);
-  margin-bottom: 2rem;
-  max-width: 530px;
+  margin-bottom: 1.75rem;
+  max-width: 520px;
 }
 
 .hero-actions {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.25rem;
   flex-wrap: wrap;
-  margin-bottom: 2.5rem;
+  margin-bottom: 1.85rem;
 }
 
 /* Verified Badge Pill */
@@ -610,9 +613,15 @@ p {
   gap: 0.75rem;
   background-color: var(--color-paper-light);
   border: 1px solid var(--color-border);
-  padding: 0.6rem 1rem;
+  padding: 0.55rem 0.95rem;
   border-radius: var(--radius-pill);
   box-shadow: var(--shadow-subtle);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.hero-trust-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(28, 34, 31, 0.08);
 }
 
 .trust-stars {
@@ -634,11 +643,11 @@ p {
   color: var(--color-deep-leaf);
 }
 
-/* Hero Photography Frame with Decorative Corner Accents */
+/* Hero Photography Frame */
 .hero-image-wrap {
   position: relative;
   width: 100%;
-  max-width: 460px;
+  max-width: 390px;
   margin-left: auto;
 }
 
@@ -646,60 +655,68 @@ p {
   position: relative;
   background-color: var(--color-paper-light);
   border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
   overflow: hidden;
   box-shadow: var(--shadow-float);
 }
 
 .hero-image-frame img {
   width: 100%;
+  height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
+  object-position: center top;
   transition: transform 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  display: block;
 }
 
 .hero-image-frame:hover img {
   transform: scale(1.02);
 }
 
-/* Floating Practitioner Accent Card */
-.hero-floating-card {
-  position: absolute;
-  bottom: 24px;
-  left: -28px;
-  background-color: rgba(250, 248, 243, 0.95);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(197, 160, 89, 0.35);
-  padding: 0.85rem 1.25rem;
-  border-radius: var(--radius-xs);
-  box-shadow: var(--shadow-float);
-  max-width: 260px;
-  z-index: 2;
-}
-
-.floating-card-title {
-  font-family: var(--font-serif);
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--color-deep-leaf);
-  line-height: 1.2;
-}
-
-.floating-card-subtitle {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-clay);
-  margin-top: 3px;
-}
-
 .image-caption {
-  font-size: 0.72rem;
-  letter-spacing: 0.14em;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--color-ink-light);
-  margin-top: 0.85rem;
+  margin-top: 0.75rem;
   line-height: 1.4;
+}
+
+/* Desktop Dimension Optimizations (>= 993px) */
+@media (min-width: 993px) {
+  .hero-home {
+    min-height: calc(100vh - var(--header-height));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: clamp(1.5rem, 3vh, 2.75rem);
+    padding-bottom: clamp(1.5rem, 3vh, 2.75rem);
+  }
+
+  .hero-home > .container {
+    width: 100%;
+  }
+
+  .editorial-split--55-45 {
+    grid-template-columns: 57fr 43fr;
+    gap: clamp(2.5rem, 4.5vw, 4.5rem);
+    align-items: center;
+  }
+
+  .hero-headline {
+    font-size: clamp(2.35rem, 3.6vw, 3.5rem);
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+  }
+
+  .hero-image-wrap {
+    max-width: clamp(330px, 26vw, 385px);
+  }
+
+  .hero-image-frame img {
+    max-height: min(480px, 58vh);
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -1601,13 +1618,6 @@ p {
   .hero-image-wrap {
     margin-top: 2rem;
     max-width: 100%;
-  }
-
-  .hero-floating-card {
-    left: 12px;
-    bottom: 16px;
-    padding: 0.65rem 1rem;
-    max-width: calc(100% - 24px);
   }
 
   .journey-sequence {
